@@ -1,0 +1,57 @@
+<!-- Pegination -->
+<nav class="d-flex justify-content-center" aria-label="Page navigation">
+    <ul class="pagination bg-white">
+        <li th:if="${currPage > 1}" class="page-item"><a class="page-link" href="#">Pre</a></li>
+
+        <!-- if total pages less  or equal to 6 -->
+        <th:block th:if="${totalPages <= 6}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+            <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
+                <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
+            </li>
+        </th:block>
+
+        <!-- if total pages greater than 6 -->
+        <th:block th:if="${totalPages > 6}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+            <!-- 1, 2, 3 pages -->
+            <th:block th:if="${currPage <= 3}">
+                <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
+                    <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
+                </li>
+            </th:block>
+
+            <!-- For all middle pages -->
+            <th:block th:if="${currPage > 3 && currPage < totalPages - 2}">
+                <th:block th:if="${currPage == pageNumber -1}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
+                            th:text="${pageNumber}"></a>
+                    </li>
+                </th:block>
+                <th:block th:if="${currPage == pageNumber}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
+                            th:text="${pageNumber}"></a>
+                    </li>
+                </th:block>
+                <th:block th:if="${currPage == pageNumber + 1}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
+                            th:text="${pageNumber}"></a>
+                    </li>
+                </th:block>
+
+            </th:block>
+
+            <!-- For last 3 pages -->
+            <th:block th:if="${pageNumber >= totalPages - 2}">
+                <!-- <li class="page-item" th:if="${pageNumber == totalPages-2}">
+                        <span class="fw-bold mx-2">...</span>
+                    </li> -->
+                <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
+                    <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
+                </li>
+            </th:block>
+        </th:block>
+        <li th:if="${currPage < totalPages}" class="page-item"><a class="page-link" href="#">Next</a></li>
+    </ul>
+</nav>

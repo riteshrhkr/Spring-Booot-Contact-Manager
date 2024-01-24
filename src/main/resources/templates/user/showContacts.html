@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: baseLayout(~{::title},~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact List</title>
+</head>
+
+<body>
+
+    <!-- If contact list is empty -->
+    <div class="text-center" th:if="${contacts.getNumberOfElements() == 0}">
+        <div class="bg-white p-1 p-md-3 mx-md-5">
+            <img class="w-25" th:src="@{/img/noDataFound.gif}">
+            <h3 class="my-2">No Contact Found</h3>
+            <a th:href="@{/user/contact/add}" class="btn btn-primary btn-lg mt-3">Add Contact</a>
+        </div>
+    </div>
+
+    <!-- If contact list is not empty show contacts-->
+    <div th:if="${contacts.getNumberOfElements() != 0}">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <!-- Table Head -->
+                <thead>
+                    <tr>
+                        <th scope="col">#No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Phone</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody class="table-group-divider">
+                    <div th:each="contact, status : ${contacts}">
+                        <tr data-bs-toggle="modal" data-bs-target="#contactModal"
+                            th:attr="data-id = ${contact.id},data-image = ${contact.image},data-desc = ${contact.description}, data-work = ${contact.work}"
+                            th:onclick="showContact(this)">
+                            <th style="max-width: 150px;" scope="row">
+                                <span class="text-overflow" th:text="${status.count + (contacts.number * contacts.getSize())}"></span>
+                            </th>
+                            <th style="max-width: 150px;" scope="row">
+                                <span th:id="${contact.id+'-contactName'}" class="text-overflow"
+                                    th:text="${contact.name}"></span>
+                            </th>
+                            <th style="max-width: 150px;" scope="row">
+                                <span th:id="${contact.id+'-contactPhone'}" class="text-overflow" th:text="${contact.phone}"></span>
+                            </th>
+
+                            <th style="max-width: 150px;" scope="row">
+                                <span th:id="${contact.id+'-contactEmail'}" class="text-overflow"
+                                    th:text="${contact.email}"></span>
+                            </th>
+                            
+                            <th style="max-width: 150px;" scope="row">
+                                <span th:id="${contact.id+'-contactAddress'}" class="text-overflow"
+                                    th:text="${contact.address}"></span>
+                            </th>
+                            <th scope="row" class="p-0">
+                                <img class="px-md-2 pointer-cursor" th:src="@{/img/editIcon.svg}" alt="Edit"
+                                    th:onclick="editContactIcon()">
+                                <img class="px-md-2 px-1 pointer-cursor" th:attr="data-id = ${contact.id}"
+                                    th:onclick="deleteContactIcon(this)" th:src="@{/img/removeIcon.svg}" alt="&times;">
+                            </th>
+                        </tr>
+                    </div>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mb-2"> <span class="bg-white box"
+                th:text="${contacts.number + 1 + ' of ' + contacts.totalPages}"></span></div>
+
+        <!-- Pegination -->
+        <div th:replace="~{fragments/negivation :: pagination(${contacts.number + 1}, ${contacts.totalPages})}"></div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactImage" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 id="updateHeading" class="" style="display: none; color:#56296d;">Update Contact</h2>
+                    <button id="closeModal" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Contact Image with name -->
+                    <h1 class="fs-4 text-center" id="contactImage">
+                        <img id="profilePic" class="profile-pic" th:src="@{/img/default_profile_pic.png}" alt="">
+                        <div id="modal-contactName" class="m-2" style="color:#085214;"></div>
+                    </h1>
+                    <!-- Form -->
+                    <form id ="contactForm" method="post" autocomplete="off" enctype="multipart/form-data" class="form">
+
+                        <input type="hidden" name="id" id="id">
+
+                        <!-- Name -->
+                        <div id="nameField" class="form-floating mb-3" style="display: none;">
+                            <input type="text" class="form-control" name="name" id="name" placeholder="">
+                            <label for="name"><i class="fa-solid fa-user me-2"></i>Contact Name</label>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="phone" id="phone" minlength="10"
+                                maxlength="10" accept="[0-9]" placeholder="" disabled required>
+                            <label> <strong class="text-danger me-2">*</strong><i class="fa-solid fa-phone me-2"></i>Phone No.</label>
+                            <div class="invalid-feedback" id="invalidPhone"></div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-floating mb-3">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="Contact Email"
+                                disabled>
+                            <label for="email"><i class="fa-solid fa-envelope me-2"></i>Contact Email</label>
+                        </div>
+
+                        <!-- address -->
+                        <div class="form-floating mb-3">
+                            <textarea name="address" id="address" class="form-control" placeholder="Address"
+                                maxlength="500" disabled></textarea>
+                            <label for="address"><i class="fa-solid fa-location me-2"></i>Contact Address</label>
+                        </div>
+
+                        <!-- work -->
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" name="work" id="work" placeholder="Contact Job"
+                                disabled>
+                            <label for="work"><i class="fa-solid fa-briefcase me-2"></i>Contact Job</label>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="form-floating mb-3">
+                            <textarea name="description" id="description" class="form-control" placeholder="Desc"
+                                maxlength="500" disabled></textarea>
+                            <label for="description"><i class="fa-solid fa-pen me-2"></i>Contact Description</label>
+                        </div>
+
+                        <!-- Profile Image -->
+                        <div id="imageField" class="form-floating mb-3" style="display: none;">
+                            <input type="file" accept="image/png, image/jpeg" class="form-control" name="profileImage"
+                                id="profileImage">
+                            <label for="profileImage"><i class="fa-solid fa-image me-2"></i>Profile Image <span
+                                    class="text-danger">(Size must
+                                    be less then 2MB)</span></label>
+                            <div class="invalid-feedback" id = "invalidProfileImage"></div>
+                        </div>
+                        <div class="modal-footer pb-0">
+                            <button id="closeModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
+                            style="position: absolute; left: 15px;"></button>
+                            <button id="editBtn" type="button" class="btn btn-warning"
+                                onclick="enableEditing()">Edit</button>
+                            <button id="cancelBtn" type="button" class="btn btn-secondary" style="display: none;"
+                                onclick="cancelUpdate()">Cancel</button>
+                            <button id="deleteBtn" type="button" class="btn btn-danger"
+                                onclick="deleteBtnclicked()">Delete</a>
+                                <button id="submitBtn" type="button" class="btn btn-success"
+                                    style="display: none;" onclick="updateContact()">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        var userName = [[${ #authentication.principal.user.email }]];
+
+        $("#contactModal").on("hidden.bs.modal", function () {
+            cancelUpdate();
+        })
+    </script>
+
+    <script src="/js/contact.js"></script>
+
+</body>
+
+</html>

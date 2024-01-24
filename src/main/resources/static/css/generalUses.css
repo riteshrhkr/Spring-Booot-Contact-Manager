@@ -1,0 +1,91 @@
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.v-center{
+    display: flex;
+    align-items: center;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.box {
+    background-color: white;
+    border-radius: 5px;
+    border: 1px solid rgb(181, 181, 181);
+    box-shadow: 1px 1px 2px rgb(226, 225, 225);
+    padding: 0.25rem;
+    margin: 0.25rem;
+}
+
+.text-overflow {
+    display: block;
+    white-space: nowrap;
+    max-width: 100%;
+    overflow: auto;
+}
+
+
+.form{}
+
+
+/* Custom classes for adding/removing borders at different screen sizes */
+/* Remove borders for screens at or above 'md' */
+@media (min-width: 768px) {
+    .b-none-md {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens below 'md' (smaller than 'md') */
+@media (max-width: 767px) {
+    .b-none-mdr {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens at or above 'lg' */
+@media (min-width: 992px) {
+    .b-none-lg {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens below 'lg' (smaller than 'lg') */
+@media (max-width: 991px) {
+    .b-none-lgr {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens at or above 'xl' */
+@media (min-width: 1200px) {
+    .b-none-xl {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens below 'xl' (smaller than 'xl') */
+@media (max-width: 1199px) {
+    .b-none-xlr {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens at or above 'sm' */
+@media (min-width: 576px) {
+    .b-none-sm {
+        border: none !important;
+    }
+}
+
+/* Remove borders for screens below 'sm' (smaller than 'sm') */
+@media (max-width: 575px) {
+    .b-none-smr {
+        border: none !important;
+    }
+}

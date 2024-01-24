@@ -1,0 +1,73 @@
+.body-bg-color {
+    background-color: rgb(202 175 218) !important;
+}
+
+.nav-bg-color {
+    background-color: #56296d !important;
+}
+
+.banner {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(0, 0, 0, .7), rgba(0, 0, 0, .7)), url("/img/banner.jpg");
+    background-size: cover;
+    background-position: center;
+    height: 92vh;
+}
+
+.form input {
+    border: 1px solid rgb(177, 177, 177);
+}
+
+.form textarea{
+    border: 1px solid rgb(177, 177, 177);
+    height: 100px !important;
+}
+
+.popupMessage{
+    z-index: 9999 !important;
+    position: absolute;
+    top: 65px;
+    right: 20px;
+}
+
+
+/* Styles for Popup Container */
+.popup-container {
+    position: fixed;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    z-index: 99;
+}
+
+/* Styles for Popup */
+.popup {
+    color: white;
+    padding: 10px;
+    border-radius: 10px 10px 0 0;
+    /* display: none; */
+    text-align: center;
+}
+
+/* Styles for Close Button */
+.close-btn {
+    color: white;
+    float: right;
+    /* font-size: 25px; */
+    cursor: pointer;
+}
+
+.profile-pic{
+    width: 10rem;
+    height: 10rem;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+.highlight {
+    color: #ff0000;
+    font-weight: bold;
+    font-style: italic;
+}

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base ::baseLayout(~{::title},~{::body})}">
+<head>
+    <title>Register Form</title>
+</head>
+
+<body>
+    <div class="mt-4 form">
+        <form th:action="@{/submitRegisterForm}" th:object="${user}" method="post">
+            <div class="row justify-content-center m-0">
+                <div class="col-xl-5 col-md-6 col-sm-8 box">
+                    <h3 class="text-center ">
+                        <img width="50" height="50" th:src="@{/img/register.png}" alt="">
+                        Register yourself!
+                    </h3>
+                    <hr class="bg-secondary">
+                    <!-- Form fields -->
+                    <div class="row gy-3 m-0 increaseHeight">
+                        <!-- Name -->
+                        <div class="col-2 center">
+                            <label for="name" class="form-label">Name</label>
+                        </div>
+                        <div class="col-1 center">
+                            <div>:</div>
+                        </div>
+                        <div class="col-sm-9 col-8">
+                            <input type="text" name="name" id="name" class="form-control" th:value="${user.name}"
+                                th:classappend="${#fields.hasErrors('name')}?'is-invalid':''" required>
+                            <div class="invalid-feedback" th:errors="*{name}"></div>
+                        </div>
+
+                        <!-- Email -->
+                        <div class="col-2 center">
+                            <label for="email" class="form-label">Email</label>
+                        </div>
+                        <div class="col-1 center">
+                            <div>:</div>
+                        </div>
+                        <div class="col-sm-9 col-8">
+                            <input type="email" name="email" id="email" class="form-control" th:value="${user.email}"
+                                th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" required>
+                            <div class="invalid-feedback" th:errors="*{email}"></div>
+                        </div>
+
+                        <!-- Password -->
+                        <div class="col-2 center">
+                            <label for="password" class="form-label">Password</label>
+                        </div>
+                        <div class="col-1 center">
+                            <div>:</div>
+                        </div>
+                        <div class="col-sm-9 col-8">
+                            <input type="password" name="password" id="password" class="form-control"
+                                th:classappend="${#fields.hasErrors('password')}?'is-invalid':''" required>
+                            <div class="invalid-feedback" th:errors="*{password}"></div>
+                        </div>
+
+                        <!-- About -->
+                        <div class="col-2 center">
+                            <label for="about" class="form-label d-flex align-items-center">About</label>
+                        </div>
+                        <div class="col-1 center">
+                            <div>:</div>
+                        </div>
+                        <div class="col-sm-9 col-8">
+                            <textarea name="about" id="about" class="form-control" th:value="${user.about}"
+                                th:classappend="${#fields.hasErrors('about')}?'is-invalid':''"></textarea>
+                            <div class="invalid-feedback" th:errors="*{about}"></div>
+                        </div>
+
+                        <!-- ImageName We cannot have name similler to User.imageName 
+                            because it is a string and this input feild is of file type-->
+                        <div class="col-2 center">
+                            <label for="image" class="form-label">Picture</label>
+                        </div>
+                        <div class="col-1 center">
+                            <div>:</div>
+                        </div>
+                        <div class="col-sm-9 col-8">
+                            <input type="file" name="image" id="image" class="form-control">
+                        </div>
+
+                        <div class="col-12">
+                            <input type="checkbox" name="terms" id="terms" class="form-check-input ms-5" required>
+                            <label for="terms" class="form-check-label ms-4">I accept Terms & Services</label>
+                            <div class="invalid-feedback d-block" th:text="${termsMessage}"></div>
+                        </div>
+
+                    </div>
+                    <hr class="bg-secondary">
+                    <div class="text-center mb-2">
+                        <button type="submit" class="btn btn-success">Register</button>
+                        <!-- <a th:href="@{/login}" class="btn btn-outline-success">Login</a> -->
+                        <a th:href="@{/login}" class="link ms-3">Already have an account</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

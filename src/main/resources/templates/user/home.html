@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: baseLayout(~{::title},~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="margin-top: -10px;">
+    <div class="banner center">
+        <div class="text-center text-light">
+            <h1 class="text-center pb-5 mb-5 body-color">
+                <span class="fs-3">Welcome</span>
+                <span th:text="${#authentication.principal.user.name}"></span>
+            </h1>
+            <div class="mt-5">Add your contacts and never lose them!</div>
+            <a th:href="@{/user/contact/add}" class="btn btn-outline-warning">Add Contacts</a>
+            <div class="mt-5">List of all contacts you have added with your account</div>
+            <a th:href="@{/user/contact/list}" class="btn btn-outline-warning">Show Contacts</a>
+        </div>
+    </div>
+
+    <!-- <div th:text="${@sessionUtil.getMessage()}"></div> -->
+</body>
+
+</html>

@@ -1,0 +1,238 @@
+<!-- Negivaion Bar (Top) -->
+<div th:fragment="navBar">
+
+    <nav class="navbar fixed-top navbar-expand-md navbar-dark bg-body-tertiary nav-bg-color">
+        <div class="container-fluid text-capitalize">
+            <a class="navbar-brand" href="/">Contect Manager</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+                <!-- If user is not logged in -->
+                <div th:if="${#authentication.principal == 'anonymousUser'}">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link" aria-current="page" th:href="@{/}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/about}">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/login}">login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" th:href="@{/register}">register</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- If user is logged in -->
+                <div th:if="${#authentication.principal != 'anonymousUser'}">
+                    <div th:with="user = ${#authentication.principal.user}">
+                        <!-- If user is admin or has role == ADMIN -->
+                        <div th:if="${user.role == 'ROLE_ADMIN'}">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" th:href="@{/user/home}">Home</a>
+                                </li>
+                                <!-- Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Contact
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{/user/contact/add}">Add Contact</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/user/contact/list}">My Contacts</a>
+                                        </li>
+                                        <!-- <li>
+                                                                            <hr class="dropdown-divider">
+                                                                        </li> -->
+                                        <!-- <li><a class="dropdown-item" th:href="@{/contact/}">Something else here</a></li> -->
+                                    </ul>
+                                </li>
+
+                                <!-- About -->
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/about}">About</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/admin/profile}"
+                                        th:text="${#strings.substringBefore(user.name, ' ')?:user.name}"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <!-- If user is normal  or has role == USER -->
+                        <div th:if="${user.role == 'ROLE_USER'}">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                                <!-- Home -->
+                                <li class="nav-item">
+                                    <a class="nav-link" aria-current="page" th:href="@{/user/home}">Home</a>
+                                </li>
+                                <!-- Dropdown -->
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        Contact
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" th:href="@{/user/contact/add}">Add Contact</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/user/contact/list}">My Contacts</a>
+                                        </li>
+                                        <!-- <li>
+                                            <hr class="dropdown-divider">
+                                        </li> -->
+                                        <!-- <li><a class="dropdown-item" th:href="@{/contact/}">Something else here</a></li> -->
+                                    </ul>
+                                </li>
+
+                                <!-- About -->
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/about}">About</a>
+                                </li>
+
+                                <!-- Login related -->
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/user/profile}"
+                                        th:text="${#strings.substringBefore(user.name, ' ')?:user.name}"></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <div class="d-none d-md-block" style="position: absolute; right:10px; top:10px;width: 16rem;">
+
+                            <form th:action="@{/user/contact/search}" method="get" class="d-flex " role="search" autocomplete="off">
+                                <input id="search-input" name="search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" oninput="search()">
+                                <button class="btn btn-outline-success" type="submit">Search</button>
+                            </form>
+                            <div id="search-result" class="list-group mt-2">
+                                <!-- Search results -->
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<!-- Pagination (params - currPage, totalPages) -->
+<div th:fragment="pagination(currPage, totalPages)">
+    <nav class="d-flex justify-content-center" aria-label="Page navigation">
+
+        <!-- Previous -->
+        <div class="d-sm-block d-none mx-3">
+            <ul class="pagination">
+                <li th:if="${currPage > 1}" class="page-item">
+                    <a class="page-link" th:href="@{'/user/contact/list/'+${currPage - 1}}">Pre</a>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="pagination">
+            <!-- if total pages less  or equal to 6 -->
+            <th:block th:if="${totalPages <= 6}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
+                <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
+                    <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
+                </li>
+            </th:block>
+
+            <th:block th:if="${totalPages > 6}">
+                <!-- 1,2,3 -->
+                <th:block th:each="i : ${#numbers.sequence(1,3)}">
+                    <li class="page-item" th:classappend="${i == currPage}? 'active' : ''">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${i}}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+                <!-- if currPage is at 3 then show 4 -->
+                <th:block th:if="${currPage == 3}">
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${currPage + 1}}"
+                            th:text="${currPage + 1}"></a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link px-2">.....</a>
+                    </li>
+                </th:block>
+
+                <!-- 4,5,6 -->
+                <th:block th:if="${currPage > 3 && currPage < totalPages - 2}">
+                    <!-- 4 -->
+                    <th:block th:unless="${currPage - 1 == 3}">
+                        <li class="page-item">
+                            <a class="page-link px-2">.....</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/user/contact/list/'+${currPage - 1}}"
+                                th:text="${currPage-1}"></a>
+                        </li>
+                    </th:block>
+                    <!-- 5 -->
+                    <th:block>
+                        <li class="page-item active">
+                            <a class="page-link" th:href="@{'/user/contact/list/'+${currPage}}"
+                                th:text="${currPage}"></a>
+                        </li>
+                    </th:block>
+                    <!--  -->
+                    <th:block th:unless="${currPage + 1 == totalPages - 2}">
+                        <li class="page-item">
+                            <a class="page-link" th:href="@{'/user/contact/list/'+${currPage + 1}}"
+                                th:text="${currPage + 1}"></a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link px-2">.....</a>
+                        </li>
+                    </th:block>
+                </th:block>
+
+                <!-- If currPage is at 1,2 or totalPages - 1, totalPages then show ... -->
+                <th:block th:if="${currPage <= 2 || currPage >= totalPages - 1}">
+                    <li class="page-item">
+                        <a class="page-link px-2">.....</a>
+                    </li>
+                </th:block>
+
+                <!-- if currPage is at 7 then show 6 -->
+                <th:block th:if="${currPage == totalPages - 2}">
+                    <li class="page-item">
+                        <a class="page-link px-2">.....</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${currPage - 1}}"
+                            th:text="${currPage - 1}"></a>
+                    </li>
+                </th:block>
+
+                <!-- 7, 8, 9 -->
+                <th:block th:each="i : ${#numbers.sequence(totalPages-2,totalPages)}">
+                    <li class="page-item" th:classappend="${i == currPage}? 'active' : ''">
+                        <a class="page-link" th:href="@{'/user/contact/list/'+${i}}" th:text="${i}"></a>
+                    </li>
+                </th:block>
+            </th:block>
+
+        </ul>
+        <!-- Next -->
+        <div class="d-sm-block d-none mx-3">
+            <ul class="pagination">
+                <li th:if="${currPage < totalPages}" class="page-item">
+                    <a class="page-link" th:href="@{'/user/contact/list/'+${currPage + 1}}">Next</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>

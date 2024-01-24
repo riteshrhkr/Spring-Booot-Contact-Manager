@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: baseLayout(~{::title},~{::section})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <section>
+        <div th:text="${#authentication.name}"></div>
+        <div th:text="${#authentication.principal.user.name}"></div>
+        <div th:text="${#strings.substringBefore(#authentication.principal.user.name, ' ')}"></div>
+
+        <!-- Loop through authorities -->
+        <div th:each="authority : ${#authentication.authorities}">
+            <span th:text="${authority}"></span><br />
+        </div>
+
+    </section>
+</body>
+
+</html>

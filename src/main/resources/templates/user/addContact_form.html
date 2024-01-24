@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: baseLayout(~{::title},~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Contact</title>
+</head>
+
+<body>
+
+    <div class="form">
+        <form th:action="@{/user/contact/add}" th:object="${contact}" method="post" autocomplete="off"
+            enctype="multipart/form-data">
+
+            <div class="row justify-content-center m-0 p-0">
+                <div class="col-xl-5 col-md-6 col-sm-8 box px-md-5">
+                    <h3 class="text-center p-2"><img th:src="@{/img/addContact.jpg}" width="50" height="50"
+                            class="me-3">Add Contact</h3>
+                    <hr>
+                    <!-- Name -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="name" id="name" th:field="*{name}" placeholder="" minlength="3" maxlength="50" required>
+                        <label for="name"><i class="fa-solid fa-user me-2"></i>Contact Name</label>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="phone" id="phone" th:field="*{phone}"
+                            minlength="10" maxlength="10" accept="[0-9]" th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
+                            placeholder="Contact Pnone number" required>
+                        <label> <strong class="text-danger me-2">*</strong><i class="fa-solid fa-phone me-2"></i>Phone No.</label>
+                        <div class="invalid-feedback"th:errors="*{phone}"></div>
+                        <div class="invalid-feedback" id="invalidPhone"></div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" name="email" id="email" th:field="*{email}"
+                            placeholder="Contact Email">
+                        <label for="email"><i class="fa-solid fa-envelope me-2"></i>Contact Email</label>
+                    </div>
+
+                    <!-- address -->
+                    <div class="form-floating mb-3">
+                        <textarea name="address" id="address" class="form-control" th:field="*{address}"
+                            placeholder="Address" maxlength="500"></textarea>
+                        <label for="address"><i class="fa-solid fa-location me-2"></i>Contact Address</label>
+                    </div>
+
+                    <!-- work -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="work" id="work" th:field="*{work}"
+                            placeholder="Contact Job">
+                        <label for="work"><i class="fa-solid fa-briefcase me-2"></i>Contact Job</label>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-floating mb-3">
+                        <textarea name="description" id="description" class="form-control" th:field="*{description}"
+                            placeholder="Desc" maxlength="500"></textarea>
+                        <label for="description"><i class="fa-solid fa-pen me-2"></i>Contact Description</label>
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="form-floating mb-3">
+                        <input type="file" accept="image/png, image/jpeg" class="form-control" name="profileImage"
+                            id="profileImage">
+                        <label for="profileImage"><i class="fa-solid fa-image me-2"></i>Profile Image <span
+                                class="text-danger">(Size must be less then 2MB)</span></label>
+                        <div class="invalid-feedback" id="invalidProfileImage"></div>
+                    </div>
+                    <hr>
+
+                    <!-- Submit -->
+                    <div class="text-center mb-3 mt-1">
+                        <button type="submit" id = "submitBtn" class="btn btn-success">Add Contact</button>
+                        <a href="/user/contact/list" class="btn btn-warning ms-4">My Contacts</a>
+                    </div>
+                </div> <!-- End of main col-->
+            </div> <!-- End of main row-->
+        </form>
+    </div>
+    <script src="/js/contact.js"></script>
+
+</body>
+
+</html>
