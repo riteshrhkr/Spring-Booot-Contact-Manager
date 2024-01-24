@@ -15,7 +15,7 @@
 	<name>ContectManager</name>
 	<description>Smart contect manager that manage contect of users. They can login, add and manage contect</description>
 	<properties>
-		<java.version>21</java.version>
+		<!-- <java.version>21</java.version> -->
 	</properties>
 	<dependencies>
 		<dependency>
