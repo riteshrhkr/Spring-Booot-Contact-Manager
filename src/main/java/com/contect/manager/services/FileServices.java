@@ -15,23 +15,20 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileServices {
     private ResourceLoader resourceLoader;
-   static private String staticDir;
+    static private String staticDir;
 
-    public FileServices(ResourceLoader resourceLoader) throws IOException {
-        this.resourceLoader = resourceLoader;
-        URI uri = resourceLoader.getResource("classpath:/static").getURI();
-        staticDir = new File(uri).getPath();
+    public FileServices(){
+        // this.resourceLoader = resourceLoader;
+        // URI uri = resourceLoader.getResource("classpath:/static").getURI();
+        // staticDir = new File(uri).getPath();
 
         /* or */
-        // try
-        // {
-        // String img = new ClassPathResource("static").getFile().getAbsolutePath();
-        // System.out.println(img);
-        // }
-        // catch (IOException e)
-        // {
-        // e.printStackTrace();
-        // }
+        try {
+            staticDir = new ClassPathResource("static").getFile().getAbsolutePath();
+            System.out.println(staticDir);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     /**
@@ -89,8 +86,8 @@ public class FileServices {
     */
     static public boolean deleteFile(String pathAfterStatic) {
         try {
-            
-            Path filePath = Path.of(staticDir,pathAfterStatic);
+
+            Path filePath = Path.of(staticDir, pathAfterStatic);
             Files.delete(filePath);
             return true;
         } catch (Exception e) {
@@ -113,7 +110,7 @@ public class FileServices {
         } else {
             try {
                 // if oldFileName is null then it throw an error
-               FileServices.deleteFile(dirAfterStatic + "/" + oldFileName);
+                FileServices.deleteFile(dirAfterStatic + "/" + oldFileName);
             } catch (Exception e) {
             }
             String fileName = saveFile(file, dirAfterStatic);
