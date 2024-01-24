@@ -3,28 +3,28 @@
 $(document).ready(function () {
 
     $("#phone").on("input", function () {
-        if($(this).val().length == 0 || $(this).val() == null){
+        if ($(this).val().length == 0 || $(this).val() == null) {
             $("#phone").addClass("is-invalid");
             $("#invalidPhone").html("Cannot be empty");
             $("#submitBtn").prop("disabled", true);
         }
-        else if(validPhoneNumber($(this).val())){
-            if($(this).val().length == 10){
+        else if (validPhoneNumber($(this).val())) {
+            if ($(this).val().length == 10) {
                 $("#invalidPhone").html("");
                 $("#phone").removeClass("is-invalid");
                 $("#submitBtn").prop("disabled", false);
             }
-            else{
+            else {
                 $("#phone").addClass("is-invalid");
                 $("#invalidPhone").html("Must be 10 characters long");
                 $("#submitBtn").prop("disabled", true);
             }
-        }else{
+        } else {
             $("#phone").addClass("is-invalid");
             $("#invalidPhone").html("Must starts with 6-9");
             $("#submitBtn").prop("disabled", true);
         }
-        
+
     });
 
     $("#profileImage").on("change", function () {
@@ -40,9 +40,22 @@ $(document).ready(function () {
             $("#invalidProfileImage").html("");
             $("#submitBtn").prop("disabled", false);
         }
+
+        const previewImage = document.getElementById('previewImage');
+
+        if (this.files && this.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                previewImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(this.files[0]);
+        }
+
     });
 
-})
+});
 
 const validPhoneNumber = function (phone) {
     var regex = /^[6-9]\d*$/;
@@ -79,7 +92,7 @@ function showContact(element) {
     // }
 }
 
-function enableEditing() {
+function enableContactEditing() {
     $("#contactImage").css("display", "none");
     $("#nameField").css("display", "block");
     $("#imageField").css("display", "block");
@@ -97,7 +110,7 @@ function enableEditing() {
 }
 
 // on cancel click disable editing
-function cancelUpdate() {
+function cancelContactUpdate() {
     $("#contactImage").css("display", "block");
     $("#nameField").css("display", "none");
     $("#imageField").css("display", "none");
@@ -113,14 +126,14 @@ function cancelUpdate() {
     $("#cancelBtn").css("display", "none");
 }
 
-function deleteBtnclicked() {
+function deleteContactBtn() {
     if (confirm("Are you sure you want to delete this contact?")) {
         deleteContact($("#id").val());
     }
 }
 
 editContactIcon = function () {
-    enableEditing();
+    enableContactEditing();
 }
 
 deleteContactIcon = function (element) {
@@ -181,7 +194,7 @@ function updateContact() {
         contentType: false,
         processData: false,
         success: function (response) {
-            
+
             location.reload();
         },
         error: function (error) {

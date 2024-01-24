@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.contect.manager.models.User;
+import com.contect.manager.services.FileServices;
 import com.contect.manager.services.UserServices;
 import com.contect.manager.utils.Message;
 
@@ -25,6 +27,8 @@ public class HomeController {
     private UserServices userServices;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    FileServices fileServices;
 
     @GetMapping("/")
     public String home(Model model) {
@@ -42,14 +46,12 @@ public class HomeController {
     // We can configured to use our custom login page in securityConfig.java
     @GetMapping("/login")
     public String login(Model model) {
-        model.addAttribute("title", "Login");
         model.addAttribute("user", new User());
         return "public/loginForm";
     }
 
     @PostMapping("/submitRegisterForm")
-    public String submitRegister(@Valid @ModelAttribute("user") User user, BindingResult result,
-            @RequestParam(name = "terms", defaultValue = "false") boolean terms, Model model) {
+    public String submitRegister(@Valid @ModelAttribute("user") User user, BindingResult result,@RequestParam(name = "terms", defaultValue = "false") boolean terms, @RequestParam("profileImage")MultipartFile file,Model model,HttpSession session) {
         // Errors
         if (result.hasErrors()) {
             System.out.println(result.getAllErrors());
@@ -62,21 +64,31 @@ public class HomeController {
 
         // Process user
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setImageName("default.png");
         user.setEnabled(true);
         user.setRole("ROLE_USER");
-
-        // encrypt password
+        try{
+           String fileName = fileServices.saveFile(file , "/img/users/" + user.getEmail() + "/");
+           if (fileName!=null) {
+               user.setImageName(fileName);
+           }
+           else{
+               user.setImageName("default.png");
+           }
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            user.setImageName("default.png");
+        }
+        
         // save to database
         userServices.saveUser(user);
 
         // Registration Success
-        model.addAttribute("message", new Message("Registration Success", "success"));
-        return "public/submitRegister";
+        session.setAttribute("message", new Message("Registration Success", "success"));
+        return "redirect:/login";
     }
 
     @GetMapping("/about")
-    public String getAbout(Model model,HttpSession session,Principal principal) {
+    public String getAbout(Model model, HttpSession session, Principal principal) {
         /* Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             
         if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
@@ -87,7 +99,7 @@ public class HomeController {
             System.out.println("Principal is not a CustomUserDetails instance.");
         } 
         */
-        session.setAttribute("message", new Message("this is content - ","danger"));
+        // session.setAttribute("message", new Message("this is content - ","danger"));
         return "public/about";
     }
 

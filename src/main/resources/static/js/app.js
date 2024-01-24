@@ -49,3 +49,26 @@ const highlightMatch = (text, keyword) => {
     let regex = new RegExp(keyword, "gi");
     return text.replace(regex, `<span class="highlight">${keyword}</span>`);
 }
+
+const enableUserEditing = () =>{
+    $("#name").prop("readonly", false);
+    $("#email").prop("readonly", false);
+    $("#about").prop("readonly", false);
+    $("#profileImageField").show();
+    $("#editBtn").css("display", "none");
+    $("#cancelBtn").css("display", "inline-block");
+    $("#submitBtn").css("display", "inline-block");
+
+}
+
+const cancelUserUpdate = () =>{
+    $("#name").prop("readonly", true);
+    $("#email").prop("readonly", true);
+    $("#about").prop("readonly", true);
+    $("#profileImageField").hide();
+    $("#editBtn").css("display", "inline-block");
+    $("#cancelBtn").css("display", "none");
+    $("#submitBtn").css("display", "none");
+
+}
+

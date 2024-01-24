@@ -6,7 +6,7 @@
 
 <body>
     <div class="mt-4 form">
-        <form th:action="@{/submitRegisterForm}" th:object="${user}" method="post">
+        <form th:action="@{/submitRegisterForm}" th:object="${user}" method="post" enctype="multipart/form-data">
             <div class="row justify-content-center m-0">
                 <div class="col-xl-5 col-md-6 col-sm-8 box">
                     <h3 class="text-center ">
@@ -71,14 +71,15 @@
                         <!-- ImageName We cannot have name similler to User.imageName 
                             because it is a string and this input feild is of file type-->
                         <div class="col-2 center">
-                            <label for="image" class="form-label">Picture</label>
+                            <label for="profileImage" class="form-label">Picture</label>
                         </div>
                         <div class="col-1 center">
                             <div>:</div>
                         </div>
                         <div class="col-sm-9 col-8">
-                            <input type="file" name="image" id="image" class="form-control">
+                            <input type="file" name="profileImage" id="profileImage" class="form-control">
                         </div>
+                        <div id="invalidProfileImage" class="invalid-feedback form-text"></div>
 
                         <div class="col-12">
                             <input type="checkbox" name="terms" id="terms" class="form-check-input ms-5" required>

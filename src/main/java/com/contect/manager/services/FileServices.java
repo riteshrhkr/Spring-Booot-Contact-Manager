@@ -17,18 +17,26 @@ public class FileServices {
     private ResourceLoader resourceLoader;
     static private String staticDir;
 
-    public FileServices(){
-        // this.resourceLoader = resourceLoader;
-        // URI uri = resourceLoader.getResource("classpath:/static").getURI();
-        // staticDir = new File(uri).getPath();
-
-        /* or */
+    public FileServices(ResourceLoader resourceLoader) throws IOException {
         try {
-            staticDir = new ClassPathResource("static").getFile().getAbsolutePath();
-            System.out.println(staticDir);
-        } catch (IOException e) {
+            this.resourceLoader = resourceLoader;
+            URI uri = resourceLoader.getResource("classpath:/static").getURI();
+            staticDir = new File(uri).getPath();
+        } catch (Exception e) {
+            System.out.println("Static Dir - " + staticDir);
             System.out.println(e.getMessage());
         }
+
+        /* or */
+        // try
+        // {
+        // String img = new ClassPathResource("static").getFile().getAbsolutePath();
+        // System.out.println(img);
+        // }
+        // catch (IOException e)
+        // {
+        // e.printStackTrace();
+        // }
     }
 
     /**
@@ -112,6 +120,7 @@ public class FileServices {
                 // if oldFileName is null then it throw an error
                 FileServices.deleteFile(dirAfterStatic + "/" + oldFileName);
             } catch (Exception e) {
+                System.out.println(e.getMessage());
             }
             String fileName = saveFile(file, dirAfterStatic);
             System.out.println("FileName = " + fileName);

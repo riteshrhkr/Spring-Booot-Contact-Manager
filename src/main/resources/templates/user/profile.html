@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" th:replace="~{base :: baseLayout(~{::title},~{::body})}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+</head>
+
+<body>
+    <!-- <div th:text="${#authentication.principal.user.email}"></div> -->
+    <!-- <h3 th:text="${user.name}"></h3> -->
+
+    <div class="row gy-2 m-0">
+        <!-- Image and name -->
+        <div class="col-sm-6 col-12">
+            <div class="box text-center mt-0" style="border-radius: 20px;">
+                <th:block th:if="${user.imageName != 'default.png'}">
+                    <img id="previewImage" style="max-height: 25rem; max-width: 100%;" class="img-fluid"
+                        th:src="@{'/img/users/'+${user.email}+'/'+${user.imageName}}" alt="">
+                </th:block>
+                <th:block th:if="${user.imageName == 'default.png'}">
+                    <img id="previewImage" style="max-height: 25rem; max-width: 100%;"
+                        th:src="@{/img/default_profile_pic.png}" alt="">
+                </th:block>
+                <div id="modal-userName" class="m-2 fs-1"> <span th:text="${user.name}"></span></div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-12 pe-md-5">
+            <form action="/user/update" method="post" th:object="${user}" class="form" enctype="multipart/form-data">
+                <!-- name -->
+                <div class="form-floating mb-3">
+                    <input type="text" name="name" id="name" class="form-control" th:value="${user.name}"
+                        th:classappend="${#fields.hasErrors('name')}?'is-invalid':''" readonly required>
+                    <label for="name"><i class="fa-solid fa-user me-2"></i> Name</label>
+                    <div class="invalid-feedback" th:errors="*{name}"></div>
+                </div>
+                <!-- Email -->
+                <!-- <div class="form-floating mb-3">
+                    <input type="email" name="email" id="email" class="form-control" th:value="${user.email}"
+                        th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" readonly required>
+                    <label for="email"><i class="fa-solid fa-envelope me-2"></i>Email</label>
+                    <div class="invalid-feedback" th:errors="*{email}"></div>
+                </div> -->
+                <!-- About -->
+                <div class="form-floating mb-3">
+                    <textarea name="about" id="about" class="form-control" th:text="${user.about}"
+                        th:classappend="${#fields.hasErrors('about')}?'is-invalid':''" readonly></textarea>
+                    <label for="about"><i class="fa-solid fa-pen me-2"></i>About</label>
+                    <div class="invalid-feedback" th:errors="*{about}"></div>
+                </div>
+                <!-- Profile Image -->
+                <div id="profileImageField" class="form-floating mb-3" style="display: none;">
+                    <input type="file" accept="image/png, image/jpeg" class="form-control" name="profileImage"
+                        id="profileImage">
+                    <label for="profileImage"><i class="fa-solid fa-image me-2"></i>Profile Image <span
+                            class="text-danger">(Size must
+                            be less then 2MB)</span></label>
+                    <div class="invalid-feedback" id="invalidProfileImage" th:text="${profileImage}"></div>
+                </div>
+                <button id="editBtn" type="button" class="btn btn-warning" onclick="enableUserEditing()">Edit</button>
+                <button id="cancelBtn" type="button" class="btn btn-secondary" style="display: none;"
+                    onclick="cancelUserUpdate()">Cancel</button>
+                <button id="submitBtn" type="submit" class="btn btn-success" style="display: none;"
+                    onclick="updateUser()">Update</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // $("#profileImage").on("change", function () {
+            
+        // });
+    </script>
+</body>
+
+</html>

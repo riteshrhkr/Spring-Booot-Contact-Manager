@@ -153,11 +153,11 @@
                             <button id="closeModal" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" 
                             style="position: absolute; left: 15px;"></button>
                             <button id="editBtn" type="button" class="btn btn-warning"
-                                onclick="enableEditing()">Edit</button>
+                                onclick="enableContactEditing()">Edit</button>
                             <button id="cancelBtn" type="button" class="btn btn-secondary" style="display: none;"
-                                onclick="cancelUpdate()">Cancel</button>
+                                onclick="cancelContactUpdate()">Cancel</button>
                             <button id="deleteBtn" type="button" class="btn btn-danger"
-                                onclick="deleteBtnclicked()">Delete</a>
+                                onclick="deleteContactBtn()">Delete</button>
                                 <button id="submitBtn" type="button" class="btn btn-success"
                                     style="display: none;" onclick="updateContact()">Update</button>
                         </div>
@@ -170,11 +170,10 @@
         var userName = [[${ #authentication.principal.user.email }]];
 
         $("#contactModal").on("hidden.bs.modal", function () {
-            cancelUpdate();
+            cancelContactUpdate();
         })
     </script>
 
-    <script src="/js/contact.js"></script>
 
 </body>
 
