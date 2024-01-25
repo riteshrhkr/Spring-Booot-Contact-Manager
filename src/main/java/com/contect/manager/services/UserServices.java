@@ -26,6 +26,12 @@ public class UserServices {
         }
     }
 
+    /**
+    * Retrieves a user by their username.
+    *
+    * @param  username   the username of the user to retrieve
+    * @return            the user with the given username, or null if not found
+    */
     public User getUserByUserName(String username) {
         try {
             return userRepo.getUserByUserName(username);

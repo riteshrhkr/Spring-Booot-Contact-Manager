@@ -79,3 +79,14 @@ const cancelUserUpdate = () =>{
 
 }
 
+const isUserExist = async (username) => {
+    try {
+        const response = await fetch("/isUserExist/" + username);
+        const data = await response.json();
+
+        return data; // Assuming the response is a boolean indicating user existence
+    } catch (error) {
+        console.error("Error fetching user existence:", error);
+        return false; // Or handle the error based on your requirements
+    }
+};

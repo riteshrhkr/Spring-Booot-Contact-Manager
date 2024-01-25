@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="~{base ::baseLayout(~{::title},~{::body})}">
+
 <head>
     <title>Register Form</title>
 </head>
@@ -38,7 +39,7 @@
                         </div>
                         <div class="col-sm-9 col-8">
                             <input type="email" name="email" id="email" class="form-control" th:value="${user.email}"
-                                th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" required>
+                                th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" required onchange="cehckEmail()">
                             <div class="invalid-feedback" th:errors="*{email}"></div>
                         </div>
 
@@ -90,7 +91,7 @@
                     </div>
                     <hr class="bg-secondary">
                     <div class="text-center mb-2">
-                        <button type="submit" class="btn btn-success">Register</button>
+                        <button id="registerUser" type="submit" class="btn btn-success">Register</button>
                         <!-- <a th:href="@{/login}" class="btn btn-outline-success">Login</a> -->
                         <a th:href="@{/login}" class="link ms-3">Already have an account</a>
                     </div>
@@ -98,6 +99,19 @@
             </div>
         </form>
     </div>
+
+    <script>
+        const cehckEmail = () => {
+            var email = $("#email").val();
+            if (isUserExist(email)) {
+            }
+            alert("User Already Exist with same email. Please Login");
+            // this.preventDefault();
+            alert("User Already Exist with same email. Please Login");
+
+        };
+
+    </script>
 </body>
 
 </html>

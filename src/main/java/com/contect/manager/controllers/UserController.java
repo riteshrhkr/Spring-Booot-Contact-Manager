@@ -3,25 +3,20 @@ package com.contect.manager.controllers;
 import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.contect.manager.config.CustomUserDetails;
 import com.contect.manager.models.User;
 import com.contect.manager.services.FileServices;
 import com.contect.manager.services.UserServices;
-
-import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/user")
@@ -84,4 +79,6 @@ public class UserController {
        System.out.println(newUser);
         return "redirect:/user/profile";
     }
+
+  
 }
