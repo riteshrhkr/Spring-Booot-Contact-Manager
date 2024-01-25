@@ -111,7 +111,7 @@ public class HomeController {
             System.out.println("Principal is not a CustomUserDetails instance.");
         } 
         */
-        session.setAttribute("message", new Message("this is content - ","danger"));
+        //session.setAttribute("message", new Message("this is content - ","danger"));
         return "public/about";
     }
 
