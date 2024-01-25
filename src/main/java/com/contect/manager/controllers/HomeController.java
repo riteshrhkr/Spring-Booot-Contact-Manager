@@ -32,7 +32,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        System.out.println("Running about");
         model.addAttribute("pageTitle", "home");
         return "home";
     }

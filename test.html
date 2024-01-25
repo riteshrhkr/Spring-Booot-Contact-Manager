@@ -1,57 +1,94 @@
-<!-- Pegination -->
-<nav class="d-flex justify-content-center" aria-label="Page navigation">
-    <ul class="pagination bg-white">
-        <li th:if="${currPage > 1}" class="page-item"><a class="page-link" href="#">Pre</a></li>
-
-        <!-- if total pages less  or equal to 6 -->
-        <th:block th:if="${totalPages <= 6}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-            <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
-                <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
-            </li>
-        </th:block>
-
-        <!-- if total pages greater than 6 -->
-        <th:block th:if="${totalPages > 6}" th:each="pageNumber : ${#numbers.sequence(1, totalPages)}">
-            <!-- 1, 2, 3 pages -->
-            <th:block th:if="${currPage <= 3}">
-                <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
-                    <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
-                </li>
+<div class="row gy-2 m-0">
+    <!-- Image and name -->
+    <div class="col-sm-6 col-12">
+        <div class="box text-center mt-0" style="border-radius: 20px;">
+            <th:block th:if="${contact.name != 'default.png'}">
+                <img id="previewImage" style="max-height: 25rem; max-width: 100%;" class="img-fluid"
+                    th:src="@{'/img/users/'+${#authentication.principal.user.email}+'/'+${contact.image}}" alt="">
             </th:block>
-
-            <!-- For all middle pages -->
-            <th:block th:if="${currPage > 3 && currPage < totalPages - 2}">
-                <th:block th:if="${currPage == pageNumber -1}">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
-                            th:text="${pageNumber}"></a>
-                    </li>
-                </th:block>
-                <th:block th:if="${currPage == pageNumber}">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
-                            th:text="${pageNumber}"></a>
-                    </li>
-                </th:block>
-                <th:block th:if="${currPage == pageNumber + 1}">
-                    <li class="page-item">
-                        <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}"
-                            th:text="${pageNumber}"></a>
-                    </li>
-                </th:block>
-
+            <th:block th:if="${contact.name == 'default.png'}">
+                <img id="previewImage" style="max-height: 25rem; max-width: 100%;"
+                    th:src="@{/img/default_profile_pic.png}" alt="">
             </th:block>
+            <div id="modal-contactName" class="m-2 fs-1"> <span th:text="${contact.name}"></span></div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-12 pe-md-5">
+        <form th:action="@{/user/contact/add}" th:object="${contact}" method="post" autocomplete="off"
+            enctype="multipart/form-data">
 
-            <!-- For last 3 pages -->
-            <th:block th:if="${pageNumber >= totalPages - 2}">
-                <!-- <li class="page-item" th:if="${pageNumber == totalPages-2}">
-                        <span class="fw-bold mx-2">...</span>
-                    </li> -->
-                <li class="page-item" th:classappend="${pageNumber == currPage}? 'active' : ''">
-                    <a class="page-link" th:href="@{'/user/contact/list/'+${pageNumber}}" th:text="${pageNumber}"></a>
-                </li>
-            </th:block>
-        </th:block>
-        <li th:if="${currPage < totalPages}" class="page-item"><a class="page-link" href="#">Next</a></li>
-    </ul>
-</nav>
+            <div class="row justify-content-center m-0 p-0">
+                <div class="col-xl-5 col-md-6 col-sm-8 box px-md-5">
+                    <h3 class="text-center p-2"><img th:src="@{/img/addContact.jpg}" width="50" height="50"
+                            class="me-3">Add
+                        Contact</h3>
+                    <hr>
+                    <!-- Name -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="name" id="name" th:field="*{name}" placeholder=""
+                            minlength="3" maxlength="50" required>
+                        <label for="name"><i class="fa-solid fa-user me-2"></i>Contact Name</label>
+                    </div>
+
+                    <!-- Phone -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="phone" id="phone" th:field="*{phone}"
+                            minlength="10" maxlength="10" accept="[0-9]"
+                            th:classappend="${#fields.hasErrors('phone')?'is-invalid':''}"
+                            placeholder="Contact Pnone number" required>
+                        <label> <strong class="text-danger me-2">*</strong><i class="fa-solid fa-phone me-2"></i>Phone
+                            No.</label>
+                        <div class="invalid-feedback" th:errors="*{phone}"></div>
+                        <div class="invalid-feedback" id="invalidPhone"></div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control" name="email" id="email" th:field="*{email}"
+                            placeholder="Contact Email">
+                        <label for="email"><i class="fa-solid fa-envelope me-2"></i>Contact Email</label>
+                    </div>
+
+                    <!-- address -->
+                    <div class="form-floating mb-3">
+                        <textarea name="address" id="address" class="form-control" th:field="*{address}"
+                            placeholder="Address" maxlength="500"></textarea>
+                        <label for="address"><i class="fa-solid fa-location me-2"></i>Contact Address</label>
+                    </div>
+
+                    <!-- work -->
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control" name="work" id="work" th:field="*{work}"
+                            placeholder="Contact Job">
+                        <label for="work"><i class="fa-solid fa-briefcase me-2"></i>Contact Job</label>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="form-floating mb-3">
+                        <textarea name="description" id="description" class="form-control" th:field="*{description}"
+                            placeholder="Desc" maxlength="500"></textarea>
+                        <label for="description"><i class="fa-solid fa-pen me-2"></i>Contact Description</label>
+                    </div>
+
+                    <!-- Profile Image -->
+                    <div class="form-floating mb-3">
+                        <input type="file" accept="image/png, image/jpeg" class="form-control" name="profileImage"
+                            id="profileImage">
+                        <label for="profileImage"><i class="fa-solid fa-image me-2"></i>Profile Image <span
+                                class="text-danger">(Size must be less then 2MB)</span></label>
+                        <div class="invalid-feedback" id="invalidProfileImage"></div>
+                    </div>
+                    <hr>
+
+                    <!-- Submit -->
+                    <button id="editBtn" type="button" class="btn btn-warning"
+                        onclick="enableUserEditing()">Edit</button>
+                    <button id="cancelBtn" type="button" class="btn btn-secondary" style="display: none;"
+                        onclick="cancelUserUpdate()">Cancel</button>
+                    <button id="submitBtn" type="submit" class="btn btn-success" style="display: none;"
+                        onclick="updateUser()">Update</button>
+                </div> <!-- End of main col-->
+            </div> <!-- End of main row-->
+        </form>
+    </div>
+</div>

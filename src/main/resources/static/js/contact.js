@@ -102,10 +102,10 @@ function enableContactEditing() {
     $("#work").prop("disabled", false);
     $("#description").prop("disabled", false);
     $("#updateHeading").css("display", "block");
-    $("#submitBtn").css("display", "block");
+    $("#submitBtn").css("display", "inline-block");
     $("#editBtn").css("display", "none");
     $("#deleteBtn").css("display", "none");
-    $("#cancelBtn").css("display", "block");
+    $("#cancelBtn").css("display", "inline-block");
 
 }
 
@@ -121,8 +121,8 @@ function cancelContactUpdate() {
     $("#description").prop("disabled", true);
     $("#updateHeading").css("display", "none");
     $("#submitBtn").css("display", "none");
-    $("#editBtn").css("display", "block");
-    $("#deleteBtn").css("display", "block");
+    $("#editBtn").css("display", "inline-block");
+    $("#deleteBtn").css("display", "inline-block");
     $("#cancelBtn").css("display", "none");
 }
 

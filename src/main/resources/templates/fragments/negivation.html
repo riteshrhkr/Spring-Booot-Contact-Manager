@@ -108,15 +108,25 @@
                                     <a class="nav-link" th:href="@{/logout}">Logout</a>
                                 </li>
                             </ul>
+                            <div class="d-block d-md-none">
+                                <form th:action="@{/user/contact/search}" method="get" class="d-flex " role="search" autocomplete="off">
+                                    <input id="search-input2" name="search-input" class="form-control me-2" type="search" placeholder="Search"
+                                        aria-label="Search" oninput="searchMobile()">
+                                    <button class="btn btn-outline-success" type="submit">Search</button>
+                                </form>
+                                <div id="search-result2" class="list-group mt-2">
+                                    <!-- Search results -->
+                                </div>
+                            </div>
 
                         </div>
                         <div class="d-none d-md-block" style="position: absolute; right:10px; top:10px;width: 16rem;">
 
                             <form th:action="@{/user/contact/search}" method="get" class="d-flex " role="search" autocomplete="off">
-                                <input id="search-input" name="search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" oninput="search()">
+                                <input id="search-input1" name="search-input" class="form-control me-2" type="search" placeholder="Search" aria-label="Search" oninput="searchPc()">
                                 <button class="btn btn-outline-success" type="submit">Search</button>
                             </form>
-                            <div id="search-result" class="list-group mt-2">
+                            <div id="search-result1" class="list-group mt-2">
                                 <!-- Search results -->
                                 
                             </div>

@@ -1,7 +1,15 @@
-const search = () => {
-    let keyword = document.getElementById("search-input").value
+const searchPc = () =>{
+    keyword = $("#search-input1").val();
+    search(keyword, "search-result1");
+}
+const searchMobile = () =>{
+    keyword = $("#search-input2").val();
+    search(keyword, "search-result2");
+}
+
+const search = (keyword, resultElement) => {
     if (keyword == "") {
-        $("#search-result").html("");
+        $("#"+resultElement).html("");
         return
     }
     var regex = /^\d+$/;
@@ -12,18 +20,18 @@ const search = () => {
             fetch(url).then((response) => {
                 return response.json();
             }).then((data) => {
-                $("#search-result").html("");
+                $("#"+resultElement).html("");
                 var resultHtml = "";
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
                         var phone = highlightMatch(data[i].phone, keyword);
                         resultHtml += `<a href="/user/contact/details/${data[i].id}" class="list-group-item list-group-item-action">${phone}</a>`;
                     }
-                    $("#search-result").html(resultHtml);
+                    $("#"+resultElement).html(resultHtml);
                 }
             });
         }else{
-            $("#search-result").html("");
+            $("#"+resultElement).html("");
         }
 
     } else {
@@ -31,18 +39,17 @@ const search = () => {
         fetch(url).then((response) => {
             return response.json();
         }).then((data) => {
-            $("#search-result").html("");
+            $("#"+resultElement).html("");
             var resultHtml = "";
             if (data.length > 0) {
                 for (var i = 0; i < data.length; i++) {
                     var name = highlightMatch(data[i].name, keyword);
                     resultHtml += `<a href="/user/contact/details/${data[i].id}" class="list-group-item list-group-item-action">${name}</a>`;
                 }
-                $("#search-result").html(resultHtml);
+                $("#"+resultElement).html(resultHtml);
             }
         });
     }
-
 }
 
 const highlightMatch = (text, keyword) => {
