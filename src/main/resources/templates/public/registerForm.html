@@ -104,11 +104,10 @@
         const cehckEmail = () => {
             var email = $("#email").val();
             if (isUserExist(email)) {
+                alert("User Already Exist with same email!");
+                $("#email").val("");
+                $("#email").focus();
             }
-            alert("User Already Exist with same email. Please Login");
-            // this.preventDefault();
-            alert("User Already Exist with same email. Please Login");
-
         };
 
     </script>
