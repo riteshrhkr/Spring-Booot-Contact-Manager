@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
  * It checks the user's role and redirects to the appropriate page.
  * If the user is not authenticated, it redirects to the login page.
  * 
+ * now not in use as of now
  */
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 

@@ -11,8 +11,6 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import com.contect.manager.services.UserDetailsServiceImpl;
 
-import static org.springframework.security.config.Customizer.withDefaults;
-
 @Configuration
 @EnableMethodSecurity
 public class SecurityConfig {
