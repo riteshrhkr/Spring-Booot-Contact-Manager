@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -111,7 +112,7 @@ public class HomeController {
             System.out.println("Principal is not a CustomUserDetails instance.");
         } 
         */
-        //session.setAttribute("message", new Message("this is content - ","danger"));
+
         return "public/about";
     }
 
@@ -146,5 +147,12 @@ public class HomeController {
             return "public/forgetPassword";
         }
         return "redirect:/login";
+    }
+
+    @ExceptionHandler(value = Exception.class)
+    public String handleException(Model model,Exception exception) {
+        model.addAttribute("exception", exception.getMessage());
+        System.out.println(exception.getMessage());
+        return "error";
     }
 }
