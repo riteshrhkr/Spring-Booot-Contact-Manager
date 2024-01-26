@@ -39,8 +39,9 @@
                         </div>
                         <div class="col-sm-9 col-8">
                             <input type="email" name="email" id="email" class="form-control" th:value="${user.email}"
-                                th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" required onchange="cehckEmail()">
+                                th:classappend="${#fields.hasErrors('email')}?'is-invalid':''" required onkeyup="cehckEmail()">
                             <div class="invalid-feedback" th:errors="*{email}"></div>
+                            <div class="invalid-feedback form-text" id = "emailError"></div>
                         </div>
 
                         <!-- Password -->
@@ -105,8 +106,13 @@
             var email = $("#email").val();
             const checkUser = await isUserExist(email);
             if (checkUser) {
-                alert("User Already Exist with same email!");
-                $("#email").focus();
+                $("#emailError").text("User Already Exist");
+                $("#email").addClass("is-invalid");
+                $("#registerUser").prop("disabled", true);
+            }else{
+                $("#emailError").text("");
+                $("#email").removeClass("is-invalid");
+                $("#registerUser").prop("disabled", false);
             }
             
         };

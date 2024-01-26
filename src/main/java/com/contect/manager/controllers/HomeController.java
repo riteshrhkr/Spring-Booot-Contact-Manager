@@ -65,7 +65,7 @@ public class HomeController {
             model.addAttribute("termsMessage", "Please accept Terms & Services to continue");
             return "public/registerForm";
         }
-        if(userServices.getUserByUserName(user.getEmail()) == null){
+        if(userServices.getUserByUserName(user.getEmail()) != null){
             session.setAttribute("message", new Message("User already exists", "warning"));
             return "public/registerForm";
         }
