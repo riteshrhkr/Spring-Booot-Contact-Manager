@@ -105,8 +105,13 @@
         const cehckEmail = async () => {
             var email = $("#email").val();
             const checkUser = await isUserExist(email);
-            if (checkUser) {
-                $("#emailError").text("User Already Exist");
+            if($("#email").val() == ""){
+                $("#emailError").text("Cannot be empty");
+                $("#email").addClass("is-invalid");
+                $("#registerUser").prop("disabled", true);
+            }
+            else if (checkUser) {
+                $("#emailError").text("User already exists");
                 $("#email").addClass("is-invalid");
                 $("#registerUser").prop("disabled", true);
             }else{
