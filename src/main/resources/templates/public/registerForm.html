@@ -101,13 +101,14 @@
     </div>
 
     <script>
-        const cehckEmail = () => {
+        const cehckEmail = async () => {
             var email = $("#email").val();
-            if (isUserExist(email)) {
+            const checkUser = await isUserExist(email);
+            if (checkUser) {
                 alert("User Already Exist with same email!");
-                $("#email").val("");
                 $("#email").focus();
             }
+            
         };
 
     </script>
